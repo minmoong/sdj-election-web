@@ -6,9 +6,9 @@
   let candidates = [];
   let startVote = false;
 
-  function addVote(num) {
+  function addVote(i) {
     new Audio(MP_Blop).play();
-    candidates[num-1].votes = candidates[num-1].votes + 1;
+    candidates[i].votes = candidates[i].votes + 1;
   }
 </script>
 
@@ -18,7 +18,7 @@
     <Screen bind:candidates bind:startVote />
   </div>
   <div class="candidate-container">
-    {#each candidates as {num, name, pname, votes}}
+    {#each candidates as {num, name, pname, votes}, i}
       <div class="candidate">
         <div class="votes">득표수: {votes}</div>
         <div class="pname">{pname}</div>
@@ -28,7 +28,7 @@
         </div>
         {#if startVote}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <div class="add-vote" on:click={() => { addVote(num); }}>투표 +1</div>
+          <div class="add-vote" on:click={() => { addVote(i); }}>투표 +1</div>
           <!-- <div class="cancel-vote" on:click={() => { cancelVote(num); }}>투표 취소 -1</div> -->
         {/if}
       </div>

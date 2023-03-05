@@ -3,12 +3,7 @@
   import MP_Blop from '/src/audio/MP_Blop.mp3';
 
   let numberUnits = ['','만','억','조','경','해','자','양','구','간','정','재','극'];
-  let candidates = [
-    {num: 1, name: '안유근', pname: '안유당', votes: 0},
-    {num: 2, name: '김종윤', pname: '김종당', votes: 0},
-    {num: 3, name: '김종헌', pname: '종헌당', votes: 0},
-  ];
-  // let candidates = [];
+  let candidates = [];
   let startVote = false;
 
   function addVote(num) {
@@ -17,6 +12,7 @@
   }
 </script>
 
+<div class="mobile-ui">현재 웹 UI가 모바일 규격의 화면 크기에 최적화 되어있지 않습니다. 데스크탑으로 접속해주세요.</div>
 <div class="container">
   <div class="screen" class:startvote={startVote}>
     <Screen bind:candidates bind:startVote />
@@ -26,7 +22,7 @@
       <div class="candidate">
         <div class="votes">득표수: {votes}</div>
         <div class="pname">{pname}</div>
-        <img src={votes < 10 ? `images/${votes+1}.png` : "images/10.png"} alt="building" width="{130 + 7*votes}px" height="{130 + 7*votes}px"/>
+        <img src={votes < 10 ? `images/${votes+1}.png` : "images/10.png"} alt="building" width="{140 + 7*votes}px" height="{140 + 7*votes}px"/>
         <div class="desc">
           기호 {num}번 후보자<br/>{pname} 대표 {name}<br />자산 {votes*100 + (votes < 13 ? `${numberUnits[votes]}` : 'WOW')}원
         </div>
@@ -41,6 +37,19 @@
 </div>
 
 <style>
+  .mobile-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  @media screen and (max-width: 600px) {
+    :not(.mobile-ui) {
+      visibility: hidden;
+    }
+  }
+
   .container {
     width: 100%;
     height: 100%;
@@ -77,7 +86,7 @@
   }
 
   .candidate .desc {
-    font-size: 25px;
+    font-size: 30px;
   }
 
   .candidate .add-vote {
@@ -94,7 +103,7 @@
   }
 
   .candidate .votes {
-    font-size: 20px;
+    font-size: 25px;
   }
 
   /* .candidate .cancel-vote {

@@ -10,11 +10,12 @@
   let currentIdx = 0;
 
   function addCandidate() {
-    candidates = [...candidates, {num, name, pname, votes: 0}];
+    candidates = [...candidates, {num, name, pname, votes: 0, avatar}];
     showModal = false;
     num = '';
     name = '';
     pname = '';
+    avatar = null;
   }
 
   function endVote() {
@@ -35,6 +36,17 @@
   function prevCandidate() {
     currentIdx = currentIdx - 1;
   }
+
+  let avatar, fileinput;
+
+	function onFileSelected(e) {
+    let image = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = e => {
+      avatar = e.target.result
+    };
+  }
 </script>
 
 <div class="screen">
@@ -42,11 +54,24 @@
     <div class="backdrop" >
       <div class="add-modal" in:fly={{ y: -200, duration: 600 }}>
         <div class="modal-title">후보자 정보 입력</div>
+        {#if avatar}
+          <img class="avatar" src={avatar} alt="candidate poster" width="200px" />
+          {:else}
+            <div class="loadImage-label">
+              <label for="loadImage">
+                <div>
+                  <img src="images/add_photo.png" alt="add icon" style="opacity:0.5" />
+                </div>
+                <div>후보자 선거 포스터 업로드</div>
+              </label>
+            </div>
+        {/if}
+        <input type="file" id="loadImage" accept=".jpg, .jpeg, .png" on:change={(e) => onFileSelected(e)} bind:this={fileinput} />
         <input type="text" placeholder="후보자 기호(숫자만 입력)" bind:value={num} />
         <input type="text" placeholder="후보자 성함" bind:value={name} />
         <input type="text" placeholder="후보자 정당 이름" bind:value={pname} />
         <!-- <input type="text" placeholder="후보자 캐치프레이즈" bind:value={cphrase} /> -->
-        <button class="btn-cancel" on:click={() => { showModal = false; }}>취소</button>
+        <button class="btn-cancel" on:click={() => {showModal = false; }}>취소</button>
         <button class="btn-add" on:click={addCandidate}>등록</button>
       </div>
     </div>
@@ -61,7 +86,7 @@
               <div class="result-message">🎉 당선을 축하드립니다! 🎉</div>
             {/if}
             <div class="result-info">
-              <img src="http://file3.knowhow.or.kr/attachment/72062:L/0" alt="당선자 포스터 사진" width="230px" />
+              <img src={candidates[currentIdx].avatar ? candidates[currentIdx].avatar : 'images/candidate_image.png'} alt="당선자 포스터 사진" width="230px" />
               <div class="winner-info">
                 <div class="winner-name">기호 {candidates[currentIdx].num}번 후보자 {candidates[currentIdx].name}</div>
                 <div class="winner-pname">정당: {candidates[currentIdx].pname}</div>
@@ -154,7 +179,25 @@
     margin-bottom: 20px;
   }
 
-  .add-modal input {
+  #loadImage {
+    visibility: hidden;
+  }
+
+  .loadImage-label {
+    display: block;
+    text-align: center;
+    border: 3px dashed #7f7f7f;
+    padding: 7px 0;
+    margin: 0 20px;
+  }
+  
+  .loadImage-label label {
+    cursor: pointer;
+    font-size: 20px;
+    color: #7f7f7f;
+  }
+
+  .add-modal input:not(#loadImage) {
     display: block;
     font-size: 17px;
     width: 90%;
@@ -167,7 +210,7 @@
     margin: 0 auto 15px;
   }
 
-  .add-modal input:focus {
+  .add-modal input:focus:not(#loadImage) {
     border: 2px solid #275efe;
   }
 

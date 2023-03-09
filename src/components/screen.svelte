@@ -80,10 +80,15 @@
     <div class="backdrop">
       <div class="add-modal result" in:fly={{ y: -200, duration: 600 }}>
         <div class="modal-title">선거 결과</div>
+        <div class="modal-subtitle">
+          (참고) 여론조사 결과: <a href="https://docs.google.com/document/d/1ZCFLv7IyVYYWhWksLfCjUn7Vu6ia_s6X/edit" target="_blank">https://docs.google.com/ ...</a>
+        </div>
         {#if !isDuplicatedVotes}
           <div class="modal-content">
             {#if currentIdx == 0}
-              <div class="result-message">🎉 당선을 축하드립니다! 🎉</div>
+              <div class="result-message">🎉 반장 당선을 축하드립니다! 🎉</div>
+              {:else if currentIdx == 1}
+                <div class="result-message">🎉 부반장 당선을 축하드립니다! 🎉</div>
             {/if}
             <div class="result-info">
               <img src={candidates[currentIdx].avatar ? candidates[currentIdx].avatar : 'images/candidate_image.png'} alt="당선자 포스터 사진" width="230px" />
@@ -95,7 +100,7 @@
                   {#if currentIdx == 0}
                     <button class="btn-next-candidate" on:click={nextCandidate}>다음 후보자 →</button>
                     {:else if currentIdx > 0 && currentIdx < candidates.length - 1}
-                    <button class="btn-prev-candidate" on:click={prevCandidate}>← 이전</button>
+                      <button class="btn-prev-candidate" on:click={prevCandidate}>← 이전</button>
                       <button class="btn-next-candidate" on:click={nextCandidate}>다음 →</button>
                     {:else}
                       <button class="btn-prev-candidate" on:click={prevCandidate}>← 이전 후보자</button>
@@ -176,6 +181,11 @@
   .add-modal .modal-title {
     font-size: 20px;
     font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .add-modal .modal-subtitle {
+    font-size: 21px;
     margin-bottom: 20px;
   }
 
